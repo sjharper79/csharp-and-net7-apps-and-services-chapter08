@@ -2,11 +2,9 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Security.Principal;
-
 using static System.Convert;
 
 namespace CryptographyLib;
-
 public class Protector
 {
     private static readonly byte[] salt =
@@ -26,17 +24,17 @@ public class Protector
             using (Rfc2898DeriveBytes pbkdf2 = new(
                 password, salt, iterations, HashAlgorithmName.SHA256))
             {
-                WriteLine("PBKDF2 algorithm: {0}, Iteration count: {1:N0}",
+                Debug.WriteLine("PBKDF2 algorithm: {0}, Iteration count: {1:N0}",
                     pbkdf2.HashAlgorithm, pbkdf2.IterationCount);
                 aes.Key = pbkdf2.GetBytes(32);
                 aes.IV = pbkdf2.GetBytes(16);
 
             }
             timer.Stop();
-            WriteLine("{0:N0} milliseconds to generate Key and IV.",
+            Debug.WriteLine("{0:N0} milliseconds to generate Key and IV.",
                 timer.ElapsedMilliseconds);
 
-            WriteLine("Encryptiong algorithm: {0}-{1}, {2} mode with {3} padding.",
+            Debug.WriteLine("Encryptiong algorithm: {0}-{1}, {2} mode with {3} padding.",
                 "AES", aes.KeySize, aes.Mode, aes.Padding);
 
             using (MemoryStream ms = new())
